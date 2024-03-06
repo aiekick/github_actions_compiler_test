@@ -1,14 +1,9 @@
-name: Linux
+name: Build
 
 on:
   push:
     branches:
     - master
-    paths-ignore:
-    - 'cmake/**'
-    - '.github/**'
-    - 'doc/**'
-    - 'samples/**'
 
 jobs: 
   Win32:
