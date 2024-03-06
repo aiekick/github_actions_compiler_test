@@ -6,48 +6,26 @@ on:
     - master
 
 jobs: 
-  Win32:
+  App:
     strategy:
-      matrix:
-        compiler_cc: [msvc, clang]
-        compiler_cxx: [msvc, clang++]
-    runs-on: windows-latest
+      matrix:    
+        config: [ 
+        {os: windows-latest,
+            {cpp: g++, c: gcc}, 
+            {cpp: cl, c: cl}},
+        {os: ubuntu-latest,
+            {cpp: g++, c: gcc}, 
+            {cpp: clang++, c: clang}},
+        {os: macos-latest,
+            {cpp: g++, c: gcc}, 
+            {cpp: clang++, c: clang}}
+        ]
+    runs-on: ${{ matrix.config.os }}
     steps:
     - name: configure
       env:
-        CC: ${{ matrix.compiler_cc }}
-        CXX: ${{ matrix.compiler_cxx }}
+        CC: ${{ matrix.config.c }}
+        CXX: ${{ matrix.config.cpp }}
       run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
     - name: build
       run: cmake --build build --config Release
-        
-  Linux:
-    strategy:
-      matrix:
-        compiler_cc: [gcc, clang]
-        compiler_cxx: [gcc++, clang++]
-    runs-on: ubuntu-latest
-    steps:
-    - name: configure
-      env:
-        CC: ${{ matrix.compiler_cc }}
-        CXX: ${{ matrix.compiler_cxx }}
-      run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
-    - name: build
-      run: cmake --build build --config Release
-      
-  Macos:
-    strategy:
-      matrix:
-        compiler_cc: [gcc, clang]
-        compiler_cxx: [gcc++, clang++]
-    runs-on: macos-latest
-    steps:
-    - name: configure
-      env:
-        CC: ${{ matrix.compiler_cc }}
-        CXX: ${{ matrix.compiler_cxx }}
-      run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
-    - name: build
-      run: cmake --build build --config Release
-       
