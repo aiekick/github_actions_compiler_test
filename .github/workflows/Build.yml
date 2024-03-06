@@ -7,25 +7,46 @@ on:
 
 jobs: 
   Win32:
+    strategy:
+      matrix:
+        compiler_cc: [msvc, clang]
+        compiler_cxx: [msvc, clang++]
     runs-on: windows-latest
     steps:
     - name: configure
+      env:
+        CC: ${{ matrix.compiler_cc }}
+        CXX: ${{ matrix.compiler_cxx }}
       run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
     - name: build
       run: cmake --build build --config Release
         
   Linux:
+    strategy:
+      matrix:
+        compiler_cc: [gcc, clang]
+        compiler_cxx: [gcc++, clang++]
     runs-on: ubuntu-latest
     steps:
     - name: configure
+      env:
+        CC: ${{ matrix.compiler_cc }}
+        CXX: ${{ matrix.compiler_cxx }}
       run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
     - name: build
       run: cmake --build build --config Release
       
   Macos:
+    strategy:
+      matrix:
+        compiler_cc: [gcc, clang]
+        compiler_cxx: [gcc++, clang++]
     runs-on: macos-latest
     steps:
     - name: configure
+      env:
+        CC: ${{ matrix.compiler_cc }}
+        CXX: ${{ matrix.compiler_cxx }}
       run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
     - name: build
       run: cmake --build build --config Release
