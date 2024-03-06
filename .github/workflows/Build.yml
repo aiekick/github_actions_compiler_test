@@ -1,0 +1,37 @@
+name: Linux
+
+on:
+  push:
+    branches:
+    - master
+    paths-ignore:
+    - 'cmake/**'
+    - '.github/**'
+    - 'doc/**'
+    - 'samples/**'
+
+jobs: 
+  Win32:
+    runs-on: windows-latest
+    steps:
+    - name: configure
+      run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
+    - name: build
+      run: cmake --build build --config Release
+        
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+    - name: configure
+      run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
+    - name: build
+      run: cmake --build build --config Release
+      
+  Macos:
+    runs-on: macos-latest
+    steps:
+    - name: configure
+      run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
+    - name: build
+      run: cmake --build build --config Release
+       
